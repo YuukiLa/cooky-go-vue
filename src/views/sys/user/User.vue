@@ -53,7 +53,7 @@
       </el-pagination>
 
     </el-card>
-    <user-edit :user-form="{id:1,name: ''}" :user-form-visible="userFormVisible" @handle-cancel="handleCancel" @handleOk="handleOk"></user-edit>
+    <user-edit :user-form-visible="userFormVisible" @handle-cancel="handleCancel" @handleOk="handleOk"></user-edit>
   </div>
 </template>
 

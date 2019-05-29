@@ -2,6 +2,7 @@
     <div>
       <el-dialog :title="userForm.id?'修改用户':'新增用户'"
                  :visible.sync="userFormVisible"
+                 :show-close="false"
                  :close-on-click-modal	= "false">
         <el-form :model="userForm">
           <el-form-item label="用户名" :label-width="labelWidth">
@@ -41,7 +42,7 @@
         this.$emit("handle-cancel")
       },
       handleOk: function() {
-        this.$emit("handleOk")
+
       }
     }
   }
