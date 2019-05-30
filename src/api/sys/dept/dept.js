@@ -8,7 +8,7 @@ export const addDept = (dept) => {
   })
 }
 
-export const getAllDept = () => {
+export const fetchDepts = () => {
   return axios.request({
     url: '/dept/tree'
   })

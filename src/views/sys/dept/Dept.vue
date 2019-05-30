@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import {getAllDept} from '@/api/sys/dept/dept'
+  import {fetchDepts} from '@/api/sys/dept/dept'
   import {buildTree} from '@/utils/tools'
   import DeptEdit from './DeptEdit'
   export default {
@@ -72,7 +72,7 @@
         this.deptFormVisible = false
       },
       handleOk: function() {
-        this._getDeptTree()
+        this._fetchDepts()
         this.$refs.deptTree.setCurrentKey(null)
         this.parentDept = {parentId:0,deptName:'上级部门'}
         this.deptFormVisible = false
@@ -82,8 +82,8 @@
         this.parentDept = {parentId:0,deptName:'上级部门'}
         this.showDeptData = this.deptData.filter(item=>item.parentId===0)
       },
-      _getDeptTree: function() {
-        getAllDept().then(res => {
+      _fetchDepts: function() {
+        fetchDepts().then(res => {
           this.deptData = res.data.data
           this.deptTreeData = buildTree(res.data.data,"deptId")
           this.showDeptData = this.deptData.filter(item=>item.parentId===0)
@@ -91,7 +91,7 @@
       }
     },
     mounted() {
-      this._getDeptTree()
+      this._fetchDepts()
     }
   }
 </script>
