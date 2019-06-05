@@ -189,3 +189,12 @@ aside {
 .multiselect--active {
   z-index: 1000 !important;
 }
+.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+  background-color: rgba(0,0,0,0);
+  .el-tree-node__label {
+    background-color: rgba(24, 144, 255,0.9);
+    padding: 3px;
+    color: white;
+    border-radius: 5px;
+  }
+}
