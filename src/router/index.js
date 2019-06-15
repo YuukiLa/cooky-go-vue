@@ -62,6 +62,7 @@ export const constantRoutes = [
 export const asyncRoutes = [
   {
     path: '/sys',
+    name: 'Sys',
     component: Layout,
     meta: {
       title: '系统管理',
@@ -89,7 +90,7 @@ export const asyncRoutes = [
       },
       {
         path: '/menu',
-        component: () => import('@/views/dashboard/index'),
+        component: () => import('@/views/sys/menu/Menu.vue'),
         name: 'Menu',
         meta: { title: '菜单管理'}
       }

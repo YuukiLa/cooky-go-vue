@@ -13,3 +13,11 @@ export const fetchDepts = () => {
     url: '/dept/tree'
   })
 }
+
+export const editDept = (dept) => {
+  return axios.request({
+    url: '/dept',
+    method: 'put',
+    data: dept
+  })
+}
