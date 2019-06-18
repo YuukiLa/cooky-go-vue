@@ -21,3 +21,10 @@ export const editDept = (dept) => {
     data: dept
   })
 }
+
+export const deleteDept = (deptId) => {
+  return axios.request({
+    url: `/dept/${deptId}`,
+    method: 'delete'
+  })
+}

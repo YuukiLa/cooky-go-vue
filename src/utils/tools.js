@@ -1,4 +1,5 @@
 import clonedeep from 'clone-deep'
+
 export const buildTree = (list,idName) => {
   if(!list) return []
   if(!list.length) return []
@@ -18,3 +19,4 @@ export const buildTree = (list,idName) => {
   //console.log(listClone[0][idName])
   return handle(0)
 }
+

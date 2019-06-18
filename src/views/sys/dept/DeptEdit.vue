@@ -53,15 +53,8 @@
         this.$emit("handle-cancel")
       },
       handleOk: function() {
-        this.deptForm.parentId = this.parentDept.parentId,
-        addDept(this.deptForm).then(res => {
-          if(res.code==200){
-            this.$message.success(res.msg)
-          }else {
-            this.$message.warning(res.msg)
-          }
-          this.$emit("handleOk")
-        })
+        this.deptForm.parentId = this.parentDept.parentId
+
       }
     }
   }

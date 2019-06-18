@@ -2,76 +2,70 @@
   <div>
     <el-card class="box-card">
       <el-row :gutter="10">
-        <el-col :span="8" style="border-right: #c0ccda solid 1px">
-          <el-button type="primary" plain @click="deptFormVisible = true">新增部门</el-button>
-          <!--              <el-button icon="el-icon-refresh" @click="handleReset">重置</el-button>-->
+        <el-col :span="6" style="border-right: #c0ccda solid 1px">
+          <el-dropdown>
+            <el-button type="primary" icon="el-icon-plus">新建部门</el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="showAddDept('top')">顶级部门</el-dropdown-item>
+              <el-dropdown-item @click.native="showAddDept('child')">子部门</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <el-popover
+            placement="top"
+            width="200"
+            v-model="visible">
+            <p>删除父部门对应子部门将转为顶级部门!</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" @click="visible = false">取消</el-button>
+              <el-button type="warning" size="mini" @click="handleDeleteDept">确定</el-button>
+            </div>
+            <el-button icon="el-icon-delete" slot="reference">删除</el-button>
+          </el-popover>
           <el-tree
             style="margin-top: 8px"
+            draggable
             :data="deptTreeData"
             default-expand-all
             node-key="deptId"
             ref="deptTree"
+            @node-drop="handleDropComplete"
             @current-change="handleCurrentKeyChange"
             :highlight-current="true"
             :expand-on-click-node="false"
             :props="{children: 'children',label: 'deptName'}">
           </el-tree>
         </el-col>
-        <el-col :span="16" v-show="deptForm.deptId">
+        <el-col :span="16">
           <el-row type="flex" justify="center">
             <el-form ref="deptForm" :model="deptForm" label-width="80px" >
-              <el-form-item label="部门名">
+              <el-form-item label="部门名" prop="deptName">
                 <el-input v-model="deptForm.deptName"></el-input>
               </el-form-item>
-              <el-form-item label="备注">
+              <el-form-item label="备注" prop="remark">
                 <el-input v-model="deptForm.remark"></el-input>
               </el-form-item>
             </el-form>
           </el-row>
           <el-row type="flex" justify="center">
-            <el-button type="primary" style="margin: 0 auto" @click="handleEditDept">修改</el-button>
+            <el-button type="primary" style="margin: 0 auto" @click="handleEditDept" v-if="deptForm.deptId">修改</el-button>
+            <el-button type="primary" style="margin: 0 auto" @click="handleSaveDept" v-else>保存</el-button>
           </el-row>
-          <!--              <el-table-->
-          <!--                :data="showDeptData"-->
-          <!--                style="width: 100%">-->
-          <!--                <el-table-column-->
-          <!--                  prop="deptId"-->
-          <!--                  label="id"-->
-          <!--                  width="180">-->
-          <!--                </el-table-column>-->
-          <!--                <el-table-column-->
-          <!--                  prop="deptName"-->
-          <!--                  label="部门名"-->
-          <!--                  width="180">-->
-          <!--                </el-table-column>-->
-          <!--                <el-table-column-->
-          <!--                  prop="remark"-->
-          <!--                  label="备注">-->
-          <!--                </el-table-column>-->
-          <!--              </el-table>-->
         </el-col>
       </el-row>
     </el-card>
-    <dept-edit :dept-form-visible="deptFormVisible" @handle-cancel="handleCancel" @handleOk="handleOk"
-               :parent-dept="parentDept"></dept-edit>
   </div>
 </template>
 
 <script>
-  import { fetchDepts, editDept } from '@/api/sys/dept/dept'
+  import { fetchDepts, addDept,editDept,deleteDept } from '@/api/sys/dept/dept'
   import { buildTree } from '@/utils/tools'
-  import DeptEdit from './DeptEdit'
 
   export default {
     name: 'Dept',
-    components: {
-      DeptEdit
-    },
     data() {
       return {
         deptTreeData: [],
-        deptData: [],
-        showDeptData: [],
+        visible: false,
         deptForm: {
           deptId: '',
           deptName: '',
@@ -83,36 +77,71 @@
       }
     },
     methods: {
-      handleCurrentKeyChange: function(currData, currNode) {
-        // this.showDeptData = this.deptData.filter(item=>item.parentId==currData.deptId)
-        this.deptForm = { ...currData }
-        this.parentDept = { parentId: currData.deptId, deptName: currData.deptName }
+      handleCurrentKeyChange: function(currData) {
+        Object.keys(this.deptForm).forEach(key => {
+          this.deptForm[key]  = currData[key]
+        })
+      },
+      handleSaveDept: function() {
+        addDept(this.deptForm).then(res => {
+          if(res.code==200){
+            this.$message.success(res.msg)
+            this.$refs.deptForm.resetFields()
+            this._fetchDepts()
+          }else {
+            this.$message.warning(res.msg)
+          }
+        })
       },
       handleEditDept: function() {
         editDept(this.deptForm).then(res => {
           this.$message.success('修改成功')
+          this.$refs.deptForm.resetFields()
           this._fetchDepts()
         })
       },
-      handleCancel: function() {
-        this.deptFormVisible = false
+      handleDeleteDept: function() {
+        if(this.deptForm.deptId){
+          deleteDept(this.deptForm.deptId).then(res => {
+            this.$message.success('修改成功')
+            this.$refs.deptForm.resetFields()
+            this._fetchDepts()
+            this.visible = false
+          })
+        }
       },
-      handleOk: function() {
-        this._fetchDepts()
-        this.$refs.deptTree.setCurrentKey(null)
-        this.parentDept = { parentId: 0, deptName: '上级部门' }
-        this.deptFormVisible = false
+      handleDropComplete: function(before,after,type) {
+        let dept = {}
+        dept.parentId = type==='inner'?after.data.deptId:after.data.parentId
+        dept.deptId = before.data.deptId
+        editDept(dept).then(res => {
+          if(res.code===200){
+            this.$message.success(res.msg)
+          }else {
+            this.$message.warning(res.msg)
+          }
+        })
       },
-      handleReset: function() {
-        this.$refs.deptTree.setCurrentKey(null)
-        this.parentDept = { parentId: 0, deptName: '上级部门' }
-        this.showDeptData = this.deptData.filter(item => item.parentId === 0)
+      showAddDept: function(type) {
+        if(type==='top') {
+          this.$refs.deptForm.resetFields()
+          this.deptForm.deptId = 0
+          this.deptForm.parentId = 0
+          this.$refs.deptTree.setCurrentNode('')
+        }else {
+          let parentId = this.deptForm.deptId
+          if(parentId){
+            this.$refs.deptForm.resetFields()
+            this.deptForm.parentId = parentId
+            this.deptForm.deptId = 0
+          }else {
+            this.$message.warning("请先选中父部门")
+          }
+        }
       },
       _fetchDepts: function() {
         fetchDepts().then(res => {
-          this.deptData = res.data.data
           this.deptTreeData = buildTree(res.data.data, 'deptId')
-          this.showDeptData = this.deptData.filter(item => item.parentId === 0)
         })
       }
     },

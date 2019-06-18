@@ -1,4 +1,5 @@
 // import parseTime, formatTime and set to filter
+import moment from "moment"
 export { parseTime, formatTime } from '@/utils'
 
 /**
@@ -65,4 +66,13 @@ export function toThousandFilter(num) {
  */
 export function uppercaseFirst(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
+/**
+ *  日期格式化
+ */
+moment.locale("zh_cn")
+export const formatDate = (date,format) => {
+  format = format? format : 'LL'
+  return moment(date).format(format)
 }
