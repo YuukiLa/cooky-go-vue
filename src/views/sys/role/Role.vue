@@ -1,7 +1,7 @@
 <template>
     <div>
       <el-card class="box-card">
-        <el-button type="primary" plain>新增角色</el-button>
+        <el-button type="primary" plain @click="roleFormVisible = true">新增角色</el-button>
         <el-table
           :data="roleData"
           style="width: 100%">
@@ -27,24 +27,36 @@
           <el-table-column
             label="操作"
           >
-            <el-button size="small">编辑</el-button>
-            <el-button type="danger" size="small">删除</el-button>
+            <template slot-scope="scope">
+              <el-button size="small" @click="handleEditRole(scope.row)">编辑</el-button>
+              <el-button type="danger" size="small" style="margin-left: 8px;">删除</el-button>
+            </template>
           </el-table-column>
         </el-table>
       </el-card>
+      <role-edit ref="editRole" :role-form-visible="roleFormVisible" @handle-cancel="roleFormVisible=false"></role-edit>
     </div>
 </template>
 
 <script>
   import {fetchRoles} from '@/api/sys/role/role'
+  import RoleEdit from './RoleEdit'
   export default {
     name: 'Role',
+    components: {
+      RoleEdit
+    },
     data() {
       return {
-        roleData: []
+        roleData: [],
+        roleFormVisible: false
       }
     },
     methods: {
+      handleEditRole: function(role) {
+        this.$refs.editRole.setRoleForm(role)
+        this.roleFormVisible = true
+      },
       _fetchRoles: function() {
         fetchRoles().then(res => {
           this.roleData = res.data.data
