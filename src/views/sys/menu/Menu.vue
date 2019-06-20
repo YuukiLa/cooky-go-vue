@@ -131,7 +131,7 @@
         ],
         menuTreeData: [],
         menuForm: {
-          menuId: '',
+          menuId: 0,
           menuName: '',
           permission: '',
           componentName: '',
@@ -193,7 +193,6 @@
         editMenu(menu).then(res => {
           if(res.code===200){
             this.$message.success(res.msg)
-
           }else {
             this.$message.warning(res.msg)
           }

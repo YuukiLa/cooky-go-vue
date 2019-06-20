@@ -34,7 +34,7 @@
           </el-table-column>
         </el-table>
       </el-card>
-      <role-edit ref="editRole" :role-form-visible="roleFormVisible" @handle-cancel="roleFormVisible=false"></role-edit>
+      <role-edit ref="editRole" :role-form-visible="roleFormVisible" @handle-close="roleFormVisible=false" @refresh="_fetchRoles"></role-edit>
     </div>
 </template>
 

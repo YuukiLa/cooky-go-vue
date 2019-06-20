@@ -58,7 +58,7 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error) // for debug
-    removeToken()
+    // removeToken()
     Message({
       message: error.message,
       type: 'error',

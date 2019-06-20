@@ -32,6 +32,7 @@
 
 <script>
   import { fetchMenus } from '@/api/sys/menu/menu'
+  import {addRole,editRole} from '@/api/sys/role/role'
   import { buildTree } from '@/utils/tools'
 
   export default {
@@ -46,7 +47,7 @@
       return {
         labelWidth: '80px',
         roleForm: {
-          roleId: '',
+          roleId: 0,
           roleName: '',
           remark: '',
           menuIds: []
@@ -56,11 +57,21 @@
     },
     methods: {
       handleCancel: function() {
-        this.$emit('handle-cancel')
+        this.$emit('handle-close')
         this.reset()
       },
-      handleOk: function() {
-
+      handleOk: async function() {
+        this.roleForm.menuIds = this.$refs.menuTree.getCheckedKeys()
+        console.log(this.roleForm)
+        let res
+        if(this.roleForm.roleId){
+          res = await editRole(this.roleForm)
+        }else {
+          res = await addRole(this.roleForm)
+        }
+        this.$message.success(res.msg)
+        this.handleCancel()
+        this.$emit("refresh")
       },
       setRoleForm: function(role) {
         Object.keys(this.roleForm).forEach(key => {
@@ -73,7 +84,7 @@
       reset: function() {
         this.$refs.menuTree.setCheckedKeys([])
         this.roleForm = {
-          roleId: '',
+          roleId: 0,
           roleName: '',
           remark: ''
         }
