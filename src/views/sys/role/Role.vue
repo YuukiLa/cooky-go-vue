@@ -29,7 +29,8 @@
           >
             <template slot-scope="scope">
               <el-button size="small" @click="handleEditRole(scope.row)">编辑</el-button>
-              <el-button type="danger" size="small" style="margin-left: 8px;">删除</el-button>
+              <el-button type="danger" size="small" style="margin-left: 8px;" slot="reference" @click="handleDeleteRole(scope.row.roleId)">删除</el-button>
+
             </template>
           </el-table-column>
         </el-table>
@@ -39,7 +40,7 @@
 </template>
 
 <script>
-  import {fetchRoles} from '@/api/sys/role/role'
+  import {fetchRoles,deleteRole} from '@/api/sys/role/role'
   import RoleEdit from './RoleEdit'
   export default {
     name: 'Role',
@@ -48,6 +49,7 @@
     },
     data() {
       return {
+        visible: false,
         roleData: [],
         roleFormVisible: false
       }
@@ -56,6 +58,23 @@
       handleEditRole: function(role) {
         this.$refs.editRole.setRoleForm(role)
         this.roleFormVisible = true
+      },
+      handleDeleteRole: function(roleId) {
+        this.$confirm('确定删除该角色？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteRole(roleId).then(res => {
+            this.$message.success(res.msg)
+            this._fetchRoles()
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       },
       _fetchRoles: function() {
         fetchRoles().then(res => {

@@ -86,7 +86,8 @@
         this.roleForm = {
           roleId: 0,
           roleName: '',
-          remark: ''
+          remark: '',
+          menuIds: []
         }
       }
     },
