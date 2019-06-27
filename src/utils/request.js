@@ -64,8 +64,9 @@ service.interceptors.response.use(
       type: 'error',
       duration: 5 * 1000
     })
-    timeout(()=>{
-      window.location.reload()
+    setTimeout(()=>{
+      removeToken()
+      location.replace("/login")
     },2000)
     return Promise.reject(error)
   }

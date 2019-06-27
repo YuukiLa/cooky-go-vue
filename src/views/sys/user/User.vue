@@ -22,10 +22,6 @@
           label="部门">
         </el-table-column>
         <el-table-column
-          prop="email"
-          label="邮箱">
-        </el-table-column>
-        <el-table-column
           label="性别">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.sex===0">男</el-tag>
@@ -34,10 +30,30 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="email"
+          label="邮箱">
+        </el-table-column>
+        <el-table-column
+          prop="phone"
+          label="电话">
+        </el-table-column>
+        <el-table-column
+          prop="remark"
+          label="备注">
+        </el-table-column>
+        <el-table-column
           label="状态">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.status===0">有效</el-tag>
             <el-tag type="info" v-else>锁定</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="操作"
+        >
+          <template slot-scope="scope">
+            <el-button size="small" @click="handleEditUser(scope.row)">编辑</el-button>
+            <el-button type="danger" size="small" style="margin-left: 8px;" slot="reference" @click="handleDeleteUser(scope.row.userId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -51,9 +67,8 @@
         layout="sizes, prev, pager, next"
         :total="total">
       </el-pagination>
-
     </el-card>
-    <user-edit :user-form-visible="userFormVisible" @handle-cancel="handleCancel" @handleOk="handleOk"></user-edit>
+    <user-edit :user-form-visible="userFormVisible" ref="userEdit" @handle-cancel="handleCancel" @handleOk="handleOk"></user-edit>
   </div>
 </template>
 
@@ -84,6 +99,13 @@
       },
       handleOk: function() {
 
+      },
+      handleDeleteUser: function(userId) {
+
+      },
+      handleEditUser: function(user) {
+        this.$refs.userEdit.setUserForm(user)
+        this.userFormVisible = true
       },
       _fetchUsers: function() {
         this.loading = true

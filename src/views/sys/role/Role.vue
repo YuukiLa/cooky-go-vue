@@ -30,7 +30,6 @@
             <template slot-scope="scope">
               <el-button size="small" @click="handleEditRole(scope.row)">编辑</el-button>
               <el-button type="danger" size="small" style="margin-left: 8px;" slot="reference" @click="handleDeleteRole(scope.row.roleId)">删除</el-button>
-
             </template>
           </el-table-column>
         </el-table>
