@@ -4,11 +4,11 @@
     <sidebar class="sidebar-container" />
     <div :class="{hasTagsView:needTagsView}" class="main-container">
       <div :class="{'fixed-header':fixedHeader}">
-        <navbar />
+        <navbar @showSetting="showSet=true"/>
         <tags-view v-if="needTagsView" />
       </div>
       <app-main />
-      <right-panel v-if="showSettings">
+      <right-panel v-if="showSettings" :show="showSet" @handleClose="showSet=false">
         <settings />
       </right-panel>
     </div>
@@ -47,6 +47,11 @@ export default {
         withoutAnimation: this.sidebar.withoutAnimation,
         mobile: this.device === 'mobile'
       }
+    }
+  },
+  data() {
+    return {
+      showSet: false
     }
   },
   methods: {

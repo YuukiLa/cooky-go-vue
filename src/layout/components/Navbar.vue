@@ -12,8 +12,11 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>
+            <span style="display:block;" @click="showSettings">修改布局</span>
+          </el-dropdown-item>
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">Log Out</span>
+            <span style="display:block;" @click="logout">退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -43,6 +46,9 @@ export default {
     ])
   },
   methods: {
+    showSettings: function() {
+      this.$emit("showSetting")
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },

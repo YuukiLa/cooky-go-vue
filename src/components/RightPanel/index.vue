@@ -2,8 +2,8 @@
   <div ref="rightPanel" :class="{show:show}" class="rightPanel-container">
     <div class="rightPanel-background" />
     <div class="rightPanel">
-      <div class="handle-button" :style="{'top':buttonTop+'px','background-color':theme}" @click="show=!show">
-        <i :class="show?'el-icon-close':'el-icon-setting'" />
+      <div class="handle-button" v-if="show" :style="{'top':buttonTop+'px','background-color':theme}" @click="handleClose">
+        <i :class="'el-icon-close'"  />
       </div>
       <div class="rightPanel-items">
         <slot />
@@ -18,6 +18,10 @@ import { addClass, removeClass } from '@/utils'
 export default {
   name: 'RightPanel',
   props: {
+    show: {
+      default: false,
+      type: Boolean
+    },
     clickNotClose: {
       default: false,
       type: Boolean
@@ -29,7 +33,7 @@ export default {
   },
   data() {
     return {
-      show: false
+
     }
   },
   computed: {
@@ -57,14 +61,17 @@ export default {
     elx.remove()
   },
   methods: {
+    handleClose: function() {
+      this.$emit("handleClose")
+    },
     addEventClick() {
       window.addEventListener('click', this.closeSidebar)
     },
     closeSidebar(evt) {
       const parent = evt.target.closest('.rightPanel')
       if (!parent) {
-        this.show = false
-        window.removeEventListener('click', this.closeSidebar)
+        // this.show = false
+        // window.removeEventListener('click', this.closeSidebar)
       }
     },
     insertToBody() {
