@@ -68,13 +68,14 @@
         :total="total">
       </el-pagination>
     </el-card>
-    <user-edit :user-form-visible="userFormVisible" ref="userEdit" @handle-cancel="handleCancel" @handleOk="handleOk"></user-edit>
+    <user-edit :user-form-visible="userFormVisible" ref="userEdit" @handle-cancel="handleCancel" @refresh="_fetchUsers" ></user-edit>
   </div>
 </template>
 
 <script>
   import {fetchUsers} from '@/api/sys/user/user'
   import UserEdit from './UserEdit'
+  import { deleteUser } from '../../../api/sys/user/user'
   export default {
     name: 'User',
     components: {
@@ -97,11 +98,22 @@
       handleCancel: function() {
         this.userFormVisible = false
       },
-      handleOk: function() {
-
-      },
       handleDeleteUser: function(userId) {
-
+        this.$confirm('确定删除该用户？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteUser(userId).then(res => {
+            this.$message.success(res.msg)
+            this._fetchUsers()
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
       },
       handleEditUser: function(user) {
         this.$refs.userEdit.setUserForm(user)

@@ -16,8 +16,6 @@
           placeholder="用户名"
           name="username"
           type="text"
-          tabindex="1"
-          auto-complete="on"
         />
       </el-form-item>
 

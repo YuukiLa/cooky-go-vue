@@ -72,8 +72,8 @@
           this.$message({
             type: 'info',
             message: '已取消删除'
-          });
-        });
+          })
+        })
       },
       _fetchRoles: function() {
         fetchRoles().then(res => {

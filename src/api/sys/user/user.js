@@ -15,3 +15,26 @@ export const fetchUsers = (query) => {
     params: query
   })
 }
+
+export const addUser = (user) => {
+  return axios.request({
+    url: '/user',
+    method: 'post',
+    data: user
+  })
+}
+
+export const editUser = (user) => {
+  return axios.request({
+    url: '/user',
+    method: 'put',
+    data: user
+  })
+}
+
+export const deleteUser = (userId) => {
+  return axios.request({
+    url: `/user/${userId}`,
+    method: 'delete'
+  })
+}
