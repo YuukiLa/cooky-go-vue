@@ -60,6 +60,7 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+
   {
     path: '/sys',
     name: 'Sys',

@@ -1,13 +1,15 @@
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 import {login} from '@/api/sys/user/user'
+import {getUserInfo} from '@/api/sys/user/user'
 
 const state = {
   token: getToken(),
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  routes: [],
+  rules: []
 }
 
 const mutations = {
@@ -23,8 +25,11 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
-  SET_ROLES: (state, roles) => {
-    state.roles = roles
+  SET_ROUTES: (state, routes) => {
+    state.routes = routes
+  },
+  SET_RULES: (state, rules) => {
+    state.rules = rules
   }
 }
 
@@ -47,14 +52,26 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      const data = { roles: ['123'], name: 'yuuki', avatar: 'xx', introduction: 'xxxxxxxx' }
-      const { roles, name, avatar, introduction } = data
+      // const data = { roles: ['123'], name: 'yuuki', avatar: 'xx', introduction: 'xxxxxxxx' }
 
-      commit('SET_ROLES', roles)
-      commit('SET_NAME', name)
-      commit('SET_AVATAR', avatar)
-      commit('SET_INTRODUCTION', introduction)
-      resolve(data)
+      getUserInfo().then(res => {
+        const data = res.data
+        const { user, menus } = data
+        let rules=[],routes = []
+        menus.forEach(menu => {
+          if(menu.menuType===1) {
+            routes.push(menu.componentName)
+          }else {
+            rules.push(menu.permission)
+          }
+        })
+        commit('SET_ROUTES', routes)
+        commit('SET_NAME', user.username)
+        commit('SET_AVATAR', "avatar")
+        commit('SET_INTRODUCTION', user.remark)
+        commit('SET_RULES', rules)
+        resolve(data)
+      })
     })
   },
 
@@ -62,7 +79,7 @@ const actions = {
 logout({ commit, state }) {
   return new Promise((resolve, reject) => {
       commit('SET_TOKEN', '')
-      commit('SET_ROLES', [])
+      commit('SET_ROUTES', [])
       removeToken()
       resetRouter()
       resolve()
@@ -75,7 +92,7 @@ resetToken({ commit })
 {
   return new Promise(resolve => {
     commit('SET_TOKEN', '')
-    commit('SET_ROLES', [])
+    commit('SET_ROUTES', [])
     removeToken()
     resolve()
   })

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-card class="box-card">
-      <el-button plain type="primary" size="small" @click="userFormVisible=true">新增用户</el-button>
+      <el-button plain type="primary" size="small" @click="userFormVisible=true" v-has-rule="'user_add'">新增用户</el-button>
       <el-table
         v-loading="loading"
         empty-text="-"

@@ -38,3 +38,10 @@ export const deleteUser = (userId) => {
     method: 'delete'
   })
 }
+
+export const getUserInfo = () => {
+  return axios.request({
+    url: '/user/userInfo',
+    method: 'get'
+  })
+}

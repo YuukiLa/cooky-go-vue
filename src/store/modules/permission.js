@@ -33,7 +33,14 @@ export function filterAsyncRoutes(routes, roles) {
 
   return res
 }
-
+const getAccesRouterList = (routes, rules) => {
+  return routes.filter(item => {
+    if (rules.indexOf(item.name)> -1 || item.path==='*') {
+      if (item.children) item.children = getAccesRouterList(item.children, rules)
+      return true
+    } else return false
+  })
+}
 const state = {
   routes: [],
   addRoutes: []
@@ -47,9 +54,9 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit }, roles) {
+  generateRoutes({ commit }, routes) {
     return new Promise(resolve => {
-      let accessedRoutes = asyncRoutes || []
+      let accessedRoutes = getAccesRouterList(asyncRoutes,routes)
       commit('SET_ROUTES', accessedRoutes)
       resolve(accessedRoutes)
     })

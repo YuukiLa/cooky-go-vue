@@ -17,6 +17,7 @@
             node-key="menuId"
             ref="menuTree"
             show-checkbox
+            check-strictly
             :expand-on-click-node="false"
             :props="{children: 'children',label: 'menuName'}">
           </el-tree>

@@ -38,7 +38,18 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.config.productionTip = false
-
+Vue.directive('hasRule', {
+  bind(el, binding, vnode) {
+    let rules = store.getters.rules
+    if (!rules.includes(binding.value)) {
+      if (!el.parentNode) {
+        el.style.display = 'none'
+      } else {
+        el.parentNode.removeChild(el)
+      }
+    }
+  }
+})
 new Vue({
   el: '#app',
   router,

@@ -4,7 +4,7 @@
       <el-row :gutter="10">
         <el-col :span="6" style="border-right: #c0ccda solid 1px">
           <el-dropdown>
-            <el-button type="primary" icon="el-icon-plus">新建部门</el-button>
+            <el-button type="primary" icon="el-icon-plus" v-has-rule="'dept_add'">新建部门</el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="showAddDept('top')">顶级部门</el-dropdown-item>
               <el-dropdown-item @click.native="showAddDept('child')">子部门</el-dropdown-item>

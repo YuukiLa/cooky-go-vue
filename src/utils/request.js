@@ -6,7 +6,7 @@ import { getToken,removeToken } from '@/utils/auth'
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // 配置在.env.** 的配置文件里，根据不同环境使用不同的url
-  timeout: 5000, // request timeout
+  // timeout: 5000, // request timeout
 })
 
 // 请求拦截
@@ -66,7 +66,7 @@ service.interceptors.response.use(
     })
     setTimeout(()=>{
       removeToken()
-      location.replace("/login")
+      location.reload()
     },2000)
     return Promise.reject(error)
   }
