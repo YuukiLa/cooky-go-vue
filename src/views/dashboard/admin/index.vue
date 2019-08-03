@@ -1,5 +1,8 @@
 <template>
   <div class="dashboard-editor-container">
+    <el-card class="box-card">
+      构思中...
+    </el-card>
   </div>
 </template>
 

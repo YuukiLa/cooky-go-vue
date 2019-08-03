@@ -1,7 +1,7 @@
 <template>
     <div>
       <el-card class="box-card">
-        <el-button type="primary" plain @click="roleFormVisible = true">新增角色</el-button>
+        <el-button type="primary" plain @click="roleFormVisible = true" v-has-rule="'role_add'">新增角色</el-button>
         <el-table
           :data="roleData"
           style="width: 100%">
@@ -28,8 +28,8 @@
             label="操作"
           >
             <template slot-scope="scope">
-              <el-button size="small" @click="handleEditRole(scope.row)">编辑</el-button>
-              <el-button type="danger" size="small" style="margin-left: 8px;" slot="reference" @click="handleDeleteRole(scope.row.roleId)">删除</el-button>
+              <el-button size="small" @click="handleEditRole(scope.row)" v-has-rule="'role_edit'">编辑</el-button>
+              <el-button type="danger" size="small" style="margin-left: 8px;" slot="reference" @click="handleDeleteRole(scope.row.roleId)" v-has-rule="'role_delete'">删除</el-button>
             </template>
           </el-table-column>
         </el-table>

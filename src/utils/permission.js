@@ -6,5 +6,6 @@ import store from '@/store'
  * @example see @/views/permission/directive.vue
  */
 export default function checkPermission(value) {
-  return true
+  let rules = store.getters.rules
+  return rules.includes(value)
 }

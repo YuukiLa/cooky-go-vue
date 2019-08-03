@@ -19,11 +19,11 @@
               <el-button size="mini" @click="visible = false">取消</el-button>
               <el-button type="warning" size="mini" @click="handleDeleteDept">确定</el-button>
             </div>
-            <el-button icon="el-icon-delete" slot="reference">删除</el-button>
+            <el-button icon="el-icon-delete" slot="reference" v-has-rule="'dept_delete'">删除</el-button>
           </el-popover>
           <el-tree
             style="margin-top: 8px"
-            draggable
+            :draggable="hasRole('dept_edit')"
             :data="deptTreeData"
             default-expand-all
             node-key="deptId"
@@ -47,8 +47,8 @@
             </el-form>
           </el-row>
           <el-row type="flex" justify="center">
-            <el-button type="primary" style="margin: 0 auto" @click="handleEditDept" v-if="deptForm.deptId">修改</el-button>
-            <el-button type="primary" style="margin: 0 auto" @click="handleSaveDept" v-else>保存</el-button>
+            <el-button type="primary" style="margin: 0 auto" @click="handleEditDept" v-if="deptForm.deptId" v-has-rule="'dept_edit'">修改</el-button>
+            <el-button type="primary" style="margin: 0 auto" @click="handleSaveDept" v-else  v-has-rule="'dept_add'">保存</el-button>
           </el-row>
         </el-col>
       </el-row>

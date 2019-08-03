@@ -16,7 +16,8 @@ import router from './router'
 import './icons' // icon
 import './permission' // permission control
 import './utils/error-log' // error log
-
+import checkPermission from './utils/permission'
+import hasRole from './mixins/hasRole'
 import * as filters from './filters' // global filters
 
 /**
@@ -31,7 +32,7 @@ import * as filters from './filters' // global filters
 Vue.use(Element, {
   size: Cookies.get('size') || 'small' // set element-ui default size
 })
-
+Vue.mixin(hasRole)
 // register global utility filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
@@ -41,7 +42,7 @@ Vue.config.productionTip = false
 Vue.directive('hasRule', {
   bind(el, binding, vnode) {
     let rules = store.getters.rules
-    if (!rules.includes(binding.value)) {
+    if (!checkPermission(binding.value)) {
       if (!el.parentNode) {
         el.style.display = 'none'
       } else {

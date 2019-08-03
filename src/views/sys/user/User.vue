@@ -52,8 +52,8 @@
           label="操作"
         >
           <template slot-scope="scope">
-            <el-button size="small" @click="handleEditUser(scope.row)">编辑</el-button>
-            <el-button type="danger" size="small" style="margin-left: 8px;" slot="reference" @click="handleDeleteUser(scope.row.userId)">删除</el-button>
+            <el-button size="small" @click="handleEditUser(scope.row)" v-has-rule="'user_edit'">编辑</el-button>
+            <el-button type="danger" size="small" style="margin-left: 8px;" slot="reference" @click="handleDeleteUser(scope.row.userId)" v-has-rule="'user_delete'">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

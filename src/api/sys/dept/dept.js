@@ -10,7 +10,7 @@ export const addDept = (dept) => {
 
 export const fetchDepts = () => {
   return axios.request({
-    url: '/dept/tree'
+    url: '/dept'
   })
 }
 

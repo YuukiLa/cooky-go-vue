@@ -4,7 +4,7 @@
       <el-row :gutter="16">
         <el-col :span="6">
           <el-dropdown>
-            <el-button type="primary" icon="el-icon-plus">新建菜单</el-button>
+            <el-button type="primary" icon="el-icon-plus" v-has-rule="'menu_add'">新建菜单</el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="showAddMenu('top')">顶级菜单</el-dropdown-item>
               <el-dropdown-item @click.native="showAddMenu('child')">子菜单</el-dropdown-item>
@@ -19,11 +19,11 @@
               <el-button size="mini" @click="visible = false">取消</el-button>
               <el-button type="warning" size="mini" @click="handleDeleteMenu">确定</el-button>
             </div>
-            <el-button icon="el-icon-delete" slot="reference">删除</el-button>
+            <el-button icon="el-icon-delete" slot="reference" v-has-rule="'menu_delete'">删除</el-button>
           </el-popover>
           <el-tree
             style="margin-top: 8px"
-            draggable
+            :draggable="hasRole('menu_edit')"
             :data="menuTreeData"
             node-key="menuId"
             ref="menuTree"
@@ -75,8 +75,8 @@
             </el-form>
           </el-row>
           <el-row type="flex" justify="center">
-            <el-button type="primary" v-if="menuForm.menuId" @click="handleEditMenu">修改</el-button>
-            <el-button type="primary" v-else @click="handleSaveMenu">保存</el-button>
+            <el-button type="primary" v-if="menuForm.menuId" @click="handleEditMenu" v-has-rule="'menu_edit'">修改</el-button>
+            <el-button type="primary" v-else @click="handleSaveMenu" v-has-rule="'menu_add'">保存</el-button>
           </el-row>
         </el-col>
       </el-row>
